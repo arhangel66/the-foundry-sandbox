@@ -13,23 +13,13 @@ let debounceTimer = null;
 let activeController = null;
 
 function normalTextClass() {
-    return prefersDark.matches ? 'text-white' : 'text-gray-900';
-}
-
-function inactiveBtnBgClass() {
-    return prefersDark.matches ? 'bg-gray-800' : 'bg-gray-200';
+    return prefersDark.matches ? 'text-white' : 'text-gray-800';
 }
 
 function setActiveOp(symbol) {
     state.op = symbol;
     opBtns.forEach(btn => {
-        const active = btn.dataset.op === symbol;
-        btn.classList.remove('bg-indigo-600', 'bg-gray-800', 'bg-gray-200', 'text-white', 'text-gray-900');
-        if (active) {
-            btn.classList.add('bg-indigo-600', 'text-white');
-        } else {
-            btn.classList.add(inactiveBtnBgClass(), normalTextClass());
-        }
+        btn.classList.toggle('active', btn.dataset.op === symbol);
     });
 }
 
@@ -41,13 +31,13 @@ function formatNumber(x) {
 
 function showResult(value) {
     resultEl.textContent = formatNumber(value);
-    resultEl.classList.remove('text-red-400', 'text-white', 'text-gray-900');
+    resultEl.classList.remove('text-red-400', 'text-white', 'text-gray-800', 'text-gray-900');
     resultEl.classList.add(normalTextClass());
 }
 
 function showError(msg) {
     resultEl.textContent = msg;
-    resultEl.classList.remove('text-white', 'text-gray-900');
+    resultEl.classList.remove('text-white', 'text-gray-800', 'text-gray-900');
     resultEl.classList.add('text-red-400');
 }
 
@@ -123,9 +113,8 @@ opBtns.forEach(btn => {
 });
 
 prefersDark.addEventListener('change', () => {
-    setActiveOp(state.op);
     if (!resultEl.classList.contains('text-red-400')) {
-        resultEl.classList.remove('text-white', 'text-gray-900');
+        resultEl.classList.remove('text-white', 'text-gray-800', 'text-gray-900');
         resultEl.classList.add(normalTextClass());
     }
 });
