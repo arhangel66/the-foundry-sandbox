@@ -1,33 +1,21 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+
 
 class Calculator:
     """Simple arithmetic calculator."""
 
+    _ops: dict[str, Callable[[float, float], float]] = {
+        "+": lambda a, b: a + b,
+        "-": lambda a, b: a - b,
+        "*": lambda a, b: a * b,
+        "/": lambda a, b: a / b,
+    }
+
     def calculate(self, operand1: float, operand2: float, operation: str) -> float:
-        """
-        Perform arithmetic operation.
-
-        Args:
-            operand1: First operand
-            operand2: Second operand
-            operation: One of '+', '-', '*', '/'
-
-        Returns:
-            Result of operation
-
-        Raises:
-            ValueError: If operation is not supported or division by zero
-        """
-        if operation == "+":
-            return operand1 + operand2
-        elif operation == "-":
-            return operand1 - operand2
-        elif operation == "*":
-            return operand1 * operand2
-        elif operation == "/":
-            if operand2 == 0:
-                raise ValueError("Division by zero")
-            return operand1 / operand2
-        else:
+        if operation not in self._ops:
             raise ValueError(f"Unsupported operation: {operation}")
+        if operation == "/" and operand2 == 0:
+            raise ValueError("Division by zero")
+        return self._ops[operation](operand1, operand2)
