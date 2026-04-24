@@ -6,13 +6,13 @@
     <title>Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-950 min-h-screen flex items-center justify-center">
-    <div class="bg-gray-900 rounded-2xl shadow-2xl p-8 w-96">
+<body class="bg-gray-100 dark:bg-gray-950 min-h-screen flex items-center justify-center">
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8 w-96">
 
         <!-- Display -->
-        <div class="bg-gray-800 rounded-xl px-6 py-5 mb-6 min-h-[96px] flex flex-col justify-between">
-            <p id="expression" class="text-gray-400 text-sm font-mono tracking-wide">&nbsp;</p>
-            <p id="result" class="text-white text-4xl font-bold font-mono text-right tracking-tight">0</p>
+        <div class="bg-gray-200 dark:bg-gray-800 rounded-xl px-6 py-5 mb-6 min-h-[96px] flex flex-col justify-between">
+            <p id="expression" class="text-gray-500 dark:text-gray-400 text-sm font-mono tracking-wide">&nbsp;</p>
+            <p id="result" class="text-4xl font-bold font-mono text-right tracking-tight">0</p>
         </div>
 
         <!-- Inputs -->
@@ -21,24 +21,24 @@
                 type="number"
                 id="operand1"
                 step="any"
-                class="w-full bg-gray-800 text-white placeholder-gray-500 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                class="w-full bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                 placeholder="A"
             />
             <input
                 type="number"
                 id="operand2"
                 step="any"
-                class="w-full bg-gray-800 text-white placeholder-gray-500 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                class="w-full bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                 placeholder="B"
             />
         </div>
 
         <!-- Operation buttons -->
         <div class="grid grid-cols-4 gap-3">
-            <button data-op="+" class="op-btn bg-gray-800 hover:bg-indigo-600 text-white text-2xl font-semibold py-4 rounded-xl transition">+</button>
-            <button data-op="−" class="op-btn bg-gray-800 hover:bg-indigo-600 text-white text-2xl font-semibold py-4 rounded-xl transition">−</button>
-            <button data-op="×" class="op-btn bg-gray-800 hover:bg-indigo-600 text-white text-2xl font-semibold py-4 rounded-xl transition">×</button>
-            <button data-op="÷" class="op-btn bg-gray-800 hover:bg-indigo-600 text-white text-2xl font-semibold py-4 rounded-xl transition">÷</button>
+            <button data-op="+" class="op-btn hover:bg-indigo-600 hover:text-white text-2xl font-semibold py-4 rounded-xl transition">+</button>
+            <button data-op="−" class="op-btn hover:bg-indigo-600 hover:text-white text-2xl font-semibold py-4 rounded-xl transition">−</button>
+            <button data-op="×" class="op-btn hover:bg-indigo-600 hover:text-white text-2xl font-semibold py-4 rounded-xl transition">×</button>
+            <button data-op="÷" class="op-btn hover:bg-indigo-600 hover:text-white text-2xl font-semibold py-4 rounded-xl transition">÷</button>
         </div>
 
     </div>

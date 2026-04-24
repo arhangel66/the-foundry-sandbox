@@ -6,16 +6,30 @@ const input1 = document.getElementById('operand1');
 const input2 = document.getElementById('operand2');
 const opBtns = document.querySelectorAll('.op-btn');
 
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
 let state = { a: '', b: '', op: '+' };
 let debounceTimer = null;
 let activeController = null;
+
+function normalTextClass() {
+    return prefersDark.matches ? 'text-white' : 'text-gray-900';
+}
+
+function inactiveBtnBgClass() {
+    return prefersDark.matches ? 'bg-gray-800' : 'bg-gray-200';
+}
 
 function setActiveOp(symbol) {
     state.op = symbol;
     opBtns.forEach(btn => {
         const active = btn.dataset.op === symbol;
-        btn.classList.toggle('bg-indigo-600', active);
-        btn.classList.toggle('bg-gray-800', !active);
+        btn.classList.remove('bg-indigo-600', 'bg-gray-800', 'bg-gray-200', 'text-white', 'text-gray-900');
+        if (active) {
+            btn.classList.add('bg-indigo-600', 'text-white');
+        } else {
+            btn.classList.add(inactiveBtnBgClass(), normalTextClass());
+        }
     });
 }
 
@@ -27,13 +41,13 @@ function formatNumber(x) {
 
 function showResult(value) {
     resultEl.textContent = formatNumber(value);
-    resultEl.classList.remove('text-red-400');
-    resultEl.classList.add('text-white');
+    resultEl.classList.remove('text-red-400', 'text-white', 'text-gray-900');
+    resultEl.classList.add(normalTextClass());
 }
 
 function showError(msg) {
     resultEl.textContent = msg;
-    resultEl.classList.remove('text-white');
+    resultEl.classList.remove('text-white', 'text-gray-900');
     resultEl.classList.add('text-red-400');
 }
 
@@ -108,5 +122,14 @@ opBtns.forEach(btn => {
     });
 });
 
-// Default active op
+prefersDark.addEventListener('change', () => {
+    setActiveOp(state.op);
+    if (!resultEl.classList.contains('text-red-400')) {
+        resultEl.classList.remove('text-white', 'text-gray-900');
+        resultEl.classList.add(normalTextClass());
+    }
+});
+
+// Default active op and initial result color
 setActiveOp('+');
+resultEl.classList.add(normalTextClass());
