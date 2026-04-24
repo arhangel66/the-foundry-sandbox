@@ -3,16 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
+    <title>Мопс-Калькулятор</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Caveat', cursive;
+            background: radial-gradient(ellipse at 20% 50%, #f9d5b3 0%, #fce4d6 35%, #e8d5f5 65%, #d5e8f5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 248, 240, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255, 215, 180, 0.7);
+            box-shadow:
+                0 8px 32px rgba(180, 110, 60, 0.12),
+                0 2px 8px rgba(180, 110, 60, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .display-area {
+            background: rgba(255, 242, 228, 0.75) !important;
+            border: 1px solid rgba(220, 185, 155, 0.5);
+        }
+
+        .op-btn {
+            border-radius: 42% 58% 55% 45% / 48% 52% 48% 52%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Caveat', cursive;
+            padding: 1rem 0;
+            transition: all 0.2s ease;
+            opacity: 0.65;
+            color: white !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        }
+
+        .op-btn:hover {
+            opacity: 0.85;
+            transform: scale(1.06);
+        }
+
+        .op-btn.active {
+            opacity: 1 !important;
+            transform: scale(1.1);
+        }
+
+        .btn-coral {
+            background: linear-gradient(145deg, #e8806a, #f5a080) !important;
+            box-shadow: 0 4px 14px rgba(232, 128, 106, 0.45), 3px 5px 10px rgba(232, 128, 106, 0.2);
+        }
+        .btn-coral.active {
+            box-shadow: 0 6px 20px rgba(232, 128, 106, 0.6), 3px 5px 12px rgba(232, 128, 106, 0.3);
+        }
+
+        .btn-sky {
+            background: linear-gradient(145deg, #6aaed4, #8fc8e8) !important;
+            box-shadow: 0 4px 14px rgba(106, 174, 212, 0.45), 3px 5px 10px rgba(106, 174, 212, 0.2);
+        }
+        .btn-sky.active {
+            box-shadow: 0 6px 20px rgba(106, 174, 212, 0.6), 3px 5px 12px rgba(106, 174, 212, 0.3);
+        }
+
+        .btn-amber {
+            background: linear-gradient(145deg, #e8b84a, #f5d070) !important;
+            box-shadow: 0 4px 14px rgba(232, 184, 74, 0.45), 3px 5px 10px rgba(232, 184, 74, 0.2);
+        }
+        .btn-amber.active {
+            box-shadow: 0 6px 20px rgba(232, 184, 74, 0.6), 3px 5px 12px rgba(232, 184, 74, 0.3);
+        }
+
+        .btn-sage {
+            background: linear-gradient(145deg, #78b565, #98d080) !important;
+            box-shadow: 0 4px 14px rgba(120, 181, 101, 0.45), 3px 5px 10px rgba(120, 181, 101, 0.2);
+        }
+        .btn-sage.active {
+            box-shadow: 0 6px 20px rgba(120, 181, 101, 0.6), 3px 5px 12px rgba(120, 181, 101, 0.3);
+        }
+
+        .pug-title {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #8b5a3a;
+            text-align: center;
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.02em;
+        }
+
+        input[type="number"] {
+            font-family: 'Caveat', cursive !important;
+            font-size: 1.2rem !important;
+        }
+
+        #result, #expression {
+            font-family: 'Caveat', cursive !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-950 min-h-screen flex items-center justify-center">
-    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8 w-96">
+<body>
+    <div class="card rounded-2xl p-8 w-96">
+
+        <p class="pug-title">🐾 Мопс-Калькулятор</p>
 
         <!-- Display -->
-        <div class="bg-gray-200 dark:bg-gray-800 rounded-xl px-6 py-5 mb-6 min-h-[96px] flex flex-col justify-between">
-            <p id="expression" class="text-gray-500 dark:text-gray-400 text-sm font-mono tracking-wide">&nbsp;</p>
-            <p id="result" class="text-4xl font-bold font-mono text-right tracking-tight">0</p>
+        <div class="display-area rounded-xl px-6 py-5 mb-6 min-h-[96px] flex flex-col justify-between">
+            <p id="expression" class="text-gray-500 text-sm tracking-wide">&nbsp;</p>
+            <p id="result" class="text-4xl font-bold text-right tracking-tight text-gray-800">0</p>
         </div>
 
         <!-- Inputs -->
@@ -21,24 +127,24 @@
                 type="number"
                 id="operand1"
                 step="any"
-                class="w-full bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                class="w-full bg-amber-50 text-gray-800 placeholder-gray-400 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-amber-300 transition border border-amber-200"
                 placeholder="A"
             />
             <input
                 type="number"
                 id="operand2"
                 step="any"
-                class="w-full bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                class="w-full bg-amber-50 text-gray-800 placeholder-gray-400 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-amber-300 transition border border-amber-200"
                 placeholder="B"
             />
         </div>
 
         <!-- Operation buttons -->
         <div class="grid grid-cols-4 gap-3">
-            <button data-op="+" class="op-btn hover:bg-indigo-600 hover:text-white text-2xl font-semibold py-4 rounded-xl transition">+</button>
-            <button data-op="−" class="op-btn hover:bg-indigo-600 hover:text-white text-2xl font-semibold py-4 rounded-xl transition">−</button>
-            <button data-op="×" class="op-btn hover:bg-indigo-600 hover:text-white text-2xl font-semibold py-4 rounded-xl transition">×</button>
-            <button data-op="÷" class="op-btn hover:bg-indigo-600 hover:text-white text-2xl font-semibold py-4 rounded-xl transition">÷</button>
+            <button data-op="+" class="op-btn btn-coral transition">+</button>
+            <button data-op="−" class="op-btn btn-sky transition">−</button>
+            <button data-op="×" class="op-btn btn-amber transition">×</button>
+            <button data-op="÷" class="op-btn btn-sage transition">÷</button>
         </div>
 
     </div>
