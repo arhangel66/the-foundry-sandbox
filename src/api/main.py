@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Form, HTTPException
 from fastapi.staticfiles import StaticFiles
 
 from .calculator import Calculator
@@ -27,7 +27,11 @@ def hello_world() -> dict[str, str]:
 
 
 @app.post("/api/calculate")
-def calculate(operand1: float, operand2: float, operation: str) -> dict[str, float | str]:
+def calculate(
+    operand1: float = Form(...),
+    operand2: float = Form(...),
+    operation: str = Form(...),
+) -> dict[str, float | str]:
     """
     Calculate arithmetic operation.
 
