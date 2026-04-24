@@ -24,3 +24,10 @@ Server will start at `http://localhost:8000`
 curl http://localhost:8000/
 # Response: {"status":"ok"}
 ```
+
+## Hello World
+
+```bash
+curl http://localhost:8000/hello-world
+# Response: {"message":"Hello, World!"}
+```
