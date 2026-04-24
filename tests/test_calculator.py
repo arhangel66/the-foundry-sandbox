@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import pytest
+from fastapi.testclient import TestClient
 
 from api.calculator import Calculator
+from api.main import app
 
 
 def test_addition():
@@ -50,3 +52,55 @@ def test_addition_with_negatives():
 def test_multiplication_by_zero():
     calc = Calculator()
     assert calc.calculate(100, 0, "*") == 0
+
+
+# HTTP integration tests
+client = TestClient(app)
+
+
+def test_http_post_addition():
+    response = client.post("/api/calculate", data={"operand1": "1", "operand2": "2", "operation": "+"})
+    assert response.status_code == 200
+    assert response.json() == {"result": 3.0}
+
+
+def test_http_post_subtraction():
+    response = client.post("/api/calculate", data={"operand1": "5", "operand2": "3", "operation": "-"})
+    assert response.status_code == 200
+    assert response.json() == {"result": 2.0}
+
+
+def test_http_post_multiplication():
+    response = client.post("/api/calculate", data={"operand1": "4", "operand2": "5", "operation": "*"})
+    assert response.status_code == 200
+    assert response.json() == {"result": 20.0}
+
+
+def test_http_post_division():
+    response = client.post("/api/calculate", data={"operand1": "10", "operand2": "2", "operation": "/"})
+    assert response.status_code == 200
+    assert response.json() == {"result": 5.0}
+
+
+def test_http_post_division_by_zero():
+    response = client.post("/api/calculate", data={"operand1": "5", "operand2": "0", "operation": "/"})
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Division by zero"
+
+
+def test_http_post_unsupported_operation():
+    response = client.post("/api/calculate", data={"operand1": "5", "operand2": "3", "operation": "%"})
+    assert response.status_code == 400
+    assert "Unsupported operation" in response.json()["detail"]
+
+
+def test_http_post_negative_numbers():
+    response = client.post("/api/calculate", data={"operand1": "-5", "operand2": "3", "operation": "+"})
+    assert response.status_code == 200
+    assert response.json() == {"result": -2.0}
+
+
+def test_http_post_float_division():
+    response = client.post("/api/calculate", data={"operand1": "7", "operand2": "2", "operation": "/"})
+    assert response.status_code == 200
+    assert response.json() == {"result": 3.5}
