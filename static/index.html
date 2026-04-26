@@ -3,150 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мопс-Калькулятор</title>
+    <title>Engineering Calculator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Caveat', cursive;
-            background: radial-gradient(ellipse at 20% 50%, #f9d5b3 0%, #fce4d6 35%, #e8d5f5 65%, #d5e8f5 100%);
+            font-family: 'JetBrains Mono', monospace;
+            background: #0d1117;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #c9d1d9;
         }
 
-        .card {
-            background: rgba(255, 248, 240, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(255, 215, 180, 0.7);
-            box-shadow:
-                0 8px 32px rgba(180, 110, 60, 0.12),
-                0 2px 8px rgba(180, 110, 60, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        .calculator {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            width: 360px;
         }
 
-        .display-area {
-            background: rgba(255, 242, 228, 0.75) !important;
-            border: 1px solid rgba(220, 185, 155, 0.5);
+        .display {
+            background: linear-gradient(135deg, #0a0e14 0%, #0d1117 100%);
+            border: 1px solid #1f2937;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 20px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .op-btn {
-            border-radius: 42% 58% 55% 45% / 48% 52% 48% 52%;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5rem;
+        #expression {
+            font-size: 12px;
+            color: #6e7681;
+            letter-spacing: 0.05em;
+            font-weight: 400;
+            min-height: 16px;
+        }
+
+        #result {
+            font-size: 32px;
             font-weight: 700;
-            font-family: 'Caveat', cursive;
-            padding: 1rem 0;
-            transition: all 0.2s ease;
-            opacity: 0.65;
-            color: white !important;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+            color: #58a6ff;
+            text-align: right;
+            word-break: break-all;
+            line-height: 1.2;
+            font-variant-numeric: tabular-nums;
         }
 
-        .op-btn:hover {
-            opacity: 0.85;
-            transform: scale(1.06);
+        #result.error {
+            color: #f85149;
+            font-size: 14px;
         }
 
-        .op-btn.active {
-            opacity: 1 !important;
-            transform: scale(1.1);
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .btn-coral {
-            background: linear-gradient(145deg, #e8806a, #f5a080) !important;
-            box-shadow: 0 4px 14px rgba(232, 128, 106, 0.45), 3px 5px 10px rgba(232, 128, 106, 0.2);
-        }
-        .btn-coral.active {
-            box-shadow: 0 6px 20px rgba(232, 128, 106, 0.6), 3px 5px 12px rgba(232, 128, 106, 0.3);
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .btn-sky {
-            background: linear-gradient(145deg, #6aaed4, #8fc8e8) !important;
-            box-shadow: 0 4px 14px rgba(106, 174, 212, 0.45), 3px 5px 10px rgba(106, 174, 212, 0.2);
-        }
-        .btn-sky.active {
-            box-shadow: 0 6px 20px rgba(106, 174, 212, 0.6), 3px 5px 12px rgba(106, 174, 212, 0.3);
-        }
-
-        .btn-amber {
-            background: linear-gradient(145deg, #e8b84a, #f5d070) !important;
-            box-shadow: 0 4px 14px rgba(232, 184, 74, 0.45), 3px 5px 10px rgba(232, 184, 74, 0.2);
-        }
-        .btn-amber.active {
-            box-shadow: 0 6px 20px rgba(232, 184, 74, 0.6), 3px 5px 12px rgba(232, 184, 74, 0.3);
-        }
-
-        .btn-sage {
-            background: linear-gradient(145deg, #78b565, #98d080) !important;
-            box-shadow: 0 4px 14px rgba(120, 181, 101, 0.45), 3px 5px 10px rgba(120, 181, 101, 0.2);
-        }
-        .btn-sage.active {
-            box-shadow: 0 6px 20px rgba(120, 181, 101, 0.6), 3px 5px 12px rgba(120, 181, 101, 0.3);
-        }
-
-        .pug-title {
-            font-family: 'Caveat', cursive;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #8b5a3a;
-            text-align: center;
-            margin-bottom: 1.25rem;
-            letter-spacing: 0.02em;
+        .input-wrapper label {
+            font-size: 11px;
+            color: #6e7681;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
         }
 
         input[type="number"] {
-            font-family: 'Caveat', cursive !important;
-            font-size: 1.2rem !important;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 8px 10px;
+            color: #58a6ff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            text-align: center;
+            transition: all 0.2s ease;
         }
 
-        #result, #expression {
-            font-family: 'Caveat', cursive !important;
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+        }
+
+        input[type="number"]:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        button {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 12px 8px;
+            color: #c9d1d9;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        button:hover {
+            background: #30363d;
+            border-color: #58a6ff;
+            color: #58a6ff;
+        }
+
+        button:active {
+            transform: scale(0.95);
+            background: #1f2937;
+        }
+
+        button.active {
+            background: #0d419e;
+            border-color: #58a6ff;
+            color: #58a6ff;
+            box-shadow: 0 0 8px rgba(88, 166, 255, 0.2);
+        }
+
+        button.binary {
+            color: #58a6ff;
+        }
+
+        button.binary:hover {
+            background: #1f4788;
+        }
+
+        button.unary {
+            color: #3fb950;
+        }
+
+        button.unary:hover {
+            background: #1f4e1a;
+        }
+
+        .title {
+            font-size: 14px;
+            color: #6e7681;
+            text-align: center;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        input[type="number"]::placeholder {
+            color: #3d444d;
         }
     </style>
 </head>
 <body>
-    <div class="card rounded-2xl p-8 w-96">
-
-        <p class="pug-title">🐾 Мопс-Калькулятор</p>
+    <div class="calculator">
+        <div class="title">Engineering Calculator</div>
 
         <!-- Display -->
-        <div class="display-area rounded-xl px-6 py-5 mb-6 min-h-[96px] flex flex-col justify-between">
-            <p id="expression" class="text-gray-500 text-sm tracking-wide">&nbsp;</p>
-            <p id="result" class="text-4xl font-bold text-right tracking-tight text-gray-800">0</p>
+        <div class="display">
+            <p id="expression">&nbsp;</p>
+            <p id="result">0</p>
         </div>
 
         <!-- Inputs -->
-        <div class="flex gap-3 mb-5">
-            <input
-                type="number"
-                id="operand1"
-                step="any"
-                class="w-full bg-amber-50 text-gray-800 placeholder-gray-400 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-amber-300 transition border border-amber-200"
-                placeholder="A"
-            />
-            <input
-                type="number"
-                id="operand2"
-                step="any"
-                class="w-full bg-amber-50 text-gray-800 placeholder-gray-400 px-4 py-3 rounded-xl text-lg text-center focus:outline-none focus:ring-2 focus:ring-amber-300 transition border border-amber-200"
-                placeholder="B"
-            />
+        <div class="input-group">
+            <div class="input-wrapper">
+                <label for="operand1">X</label>
+                <input
+                    type="number"
+                    id="operand1"
+                    step="any"
+                    placeholder="0"
+                    autofocus
+                />
+            </div>
+            <div class="input-wrapper">
+                <label for="operand2">Y</label>
+                <input
+                    type="number"
+                    id="operand2"
+                    step="any"
+                    placeholder="0"
+                />
+            </div>
         </div>
 
-        <!-- Operation buttons -->
-        <div class="grid grid-cols-4 gap-3">
-            <button data-op="+" class="op-btn btn-coral transition">+</button>
-            <button data-op="−" class="op-btn btn-sky transition">−</button>
-            <button data-op="×" class="op-btn btn-amber transition">×</button>
-            <button data-op="÷" class="op-btn btn-sage transition">÷</button>
-        </div>
+        <!-- Buttons -->
+        <div class="buttons">
+            <!-- Binary arithmetic -->
+            <button class="op-btn binary" data-op="+" title="Addition">+</button>
+            <button class="op-btn binary" data-op="−" title="Subtraction">−</button>
+            <button class="op-btn binary" data-op="×" title="Multiplication">×</button>
+            <button class="op-btn binary" data-op="÷" title="Division">÷</button>
 
+            <!-- Binary advanced -->
+            <button class="op-btn binary" data-op="**" title="Power">x^y</button>
+            <button class="op-btn binary" data-op="%" title="Modulo">%</button>
+
+            <!-- Unary functions -->
+            <button class="op-btn unary" data-op="sqrt" title="Square Root">√x</button>
+            <button class="op-btn unary" data-op="log" title="Log10">log</button>
+        </div>
     </div>
 
     <script src="app.js"></script>

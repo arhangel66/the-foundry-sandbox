@@ -24,7 +24,7 @@ def hello_world() -> dict[str, str]:
 @app.post("/api/calculate")
 def calculate(
     operand1: float = Form(...),
-    operand2: float = Form(...),
+    operand2: float | None = Form(None),
     operation: str = Form(...),
 ) -> dict[str, float | str]:
     try:

@@ -1,67 +1,93 @@
-const opSymbolToApi = { '+': '+', '−': '-', '×': '*', '÷': '/' };
+const UNARY_OPS = new Set(['sqrt', 'log']);
+
+const opSymbolToApi = {
+    '+': '+',
+    '−': '-',
+    '×': '*',
+    '÷': '/',
+    '**': '**',
+    '%': '%',
+    'sqrt': 'sqrt',
+    'log': 'log',
+};
 
 const exprEl = document.getElementById('expression');
 const resultEl = document.getElementById('result');
 const input1 = document.getElementById('operand1');
 const input2 = document.getElementById('operand2');
+const input2Wrapper = input2.parentElement;
 const opBtns = document.querySelectorAll('.op-btn');
-
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
 let state = { a: '', b: '', op: '+' };
 let debounceTimer = null;
 let activeController = null;
-
-function normalTextClass() {
-    return prefersDark.matches ? 'text-white' : 'text-gray-800';
-}
 
 function setActiveOp(symbol) {
     state.op = symbol;
     opBtns.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.op === symbol);
     });
+
+    const isUnary = UNARY_OPS.has(symbol);
+    if (isUnary) {
+        input2.disabled = true;
+        input2Wrapper.style.opacity = '0.5';
+    } else {
+        input2.disabled = false;
+        input2Wrapper.style.opacity = '1';
+    }
 }
 
 function formatNumber(x) {
-    // Limit float precision to avoid 0.1+0.2 noise
     const precise = parseFloat(x.toPrecision(10));
     return String(precise);
 }
 
 function showResult(value) {
     resultEl.textContent = formatNumber(value);
-    resultEl.classList.remove('text-red-400', 'text-white', 'text-gray-800', 'text-gray-900');
-    resultEl.classList.add(normalTextClass());
+    resultEl.classList.remove('error');
 }
 
 function showError(msg) {
     resultEl.textContent = msg;
-    resultEl.classList.remove('text-white', 'text-gray-800', 'text-gray-900');
-    resultEl.classList.add('text-red-400');
+    resultEl.classList.add('error');
 }
 
 function updateExpression() {
     const a = state.a !== '' ? state.a : '?';
-    const b = state.b !== '' ? state.b : '?';
-    exprEl.textContent = `${a} ${state.op} ${b}`;
+    const isUnary = UNARY_OPS.has(state.op);
+
+    if (isUnary) {
+        exprEl.textContent = `${state.op}(${a})`;
+    } else {
+        const b = state.b !== '' ? state.b : '?';
+        exprEl.textContent = `${a} ${state.op} ${b}`;
+    }
 }
 
 async function calculate() {
-    if (state.a === '' || state.b === '') return;
+    const isUnary = UNARY_OPS.has(state.op);
+
+    if (state.a === '') return;
+    if (!isUnary && state.b === '') return;
 
     if (activeController) activeController.abort();
     activeController = new AbortController();
 
     try {
+        const params = new URLSearchParams({
+            operand1: state.a,
+            operation: opSymbolToApi[state.op],
+        });
+
+        if (!isUnary) {
+            params.append('operand2', state.b);
+        }
+
         const response = await fetch('/api/calculate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-                operand1: state.a,
-                operand2: state.b,
-                operation: opSymbolToApi[state.op],
-            }).toString(),
+            body: params.toString(),
             signal: activeController.signal,
         });
 
@@ -112,13 +138,4 @@ opBtns.forEach(btn => {
     });
 });
 
-prefersDark.addEventListener('change', () => {
-    if (!resultEl.classList.contains('text-red-400')) {
-        resultEl.classList.remove('text-white', 'text-gray-800', 'text-gray-900');
-        resultEl.classList.add(normalTextClass());
-    }
-});
-
-// Default active op and initial result color
 setActiveOp('+');
-resultEl.classList.add(normalTextClass());
