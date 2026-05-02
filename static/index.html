@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Engineering Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,39 +12,59 @@
         }
 
         body {
-            font-family: 'JetBrains Mono', monospace;
-            background: #0d1117;
+            font-family: 'Courier New', Courier, monospace;
+            background: #000;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #c9d1d9;
+            color: #d0d0d0;
         }
 
         .calculator {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            padding: 20px;
+            background: #111;
+            border: 2px solid #aaa;
+            border-radius: 0;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.05), 4px 4px 0 #333;
+            padding: 24px;
             width: 360px;
         }
 
         .display {
-            background: linear-gradient(135deg, #0a0e14 0%, #0d1117 100%);
-            border: 1px solid #1f2937;
-            border-radius: 6px;
+            background: #000;
+            border: 2px solid #666;
+            border-radius: 0;
             padding: 16px;
             margin-bottom: 20px;
             min-height: 100px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* CRT scanline effect */
+        .display::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.08) 2px,
+                rgba(0, 0, 0, 0.08) 4px
+            );
+            pointer-events: none;
         }
 
         #expression {
             font-size: 12px;
-            color: #6e7681;
+            color: #666;
             letter-spacing: 0.05em;
             font-weight: 400;
             min-height: 16px;
@@ -56,16 +73,18 @@
         #result {
             font-size: 32px;
             font-weight: 700;
-            color: #58a6ff;
+            color: #fff;
             text-align: right;
             word-break: break-all;
             line-height: 1.2;
             font-variant-numeric: tabular-nums;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
         }
 
         #result.error {
-            color: #f85149;
+            color: #bbb;
             font-size: 14px;
+            text-shadow: none;
         }
 
         .input-group {
@@ -83,101 +102,94 @@
 
         .input-wrapper label {
             font-size: 11px;
-            color: #6e7681;
+            color: #888;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             font-weight: 600;
         }
 
         input[type="number"] {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 4px;
+            background: #000;
+            border: 1px solid #555;
+            border-radius: 0;
             padding: 8px 10px;
-            color: #58a6ff;
-            font-family: 'JetBrains Mono', monospace;
+            color: #e0e0e0;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: border-color 0.1s ease;
         }
 
         input[type="number"]:focus {
             outline: none;
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+            border-color: #fff;
         }
 
         input[type="number"]:disabled {
-            opacity: 0.4;
+            opacity: 0.3;
             cursor: not-allowed;
         }
 
         .buttons {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 8px;
+            gap: 6px;
         }
 
         button {
-            background: #21262d;
-            border: 1px solid #30363d;
-            border-radius: 4px;
+            background: #1a1a1a;
+            border: 1px solid #555;
+            border-radius: 0;
             padding: 12px 8px;
-            color: #c9d1d9;
-            font-family: 'JetBrains Mono', monospace;
+            color: #bbb;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
             user-select: none;
         }
 
         button:hover {
-            background: #30363d;
-            border-color: #58a6ff;
-            color: #58a6ff;
+            background: #2a2a2a;
+            border-color: #ccc;
+            color: #fff;
         }
 
         button:active {
-            transform: scale(0.95);
-            background: #1f2937;
+            background: #fff;
+            color: #000;
+            border-color: #fff;
         }
 
         button.active {
-            background: #0d419e;
-            border-color: #58a6ff;
-            color: #58a6ff;
-            box-shadow: 0 0 8px rgba(88, 166, 255, 0.2);
+            background: #fff;
+            border-color: #fff;
+            color: #000;
         }
 
         button.binary {
-            color: #58a6ff;
-        }
-
-        button.binary:hover {
-            background: #1f4788;
+            color: #ccc;
         }
 
         button.unary {
-            color: #3fb950;
-        }
-
-        button.unary:hover {
-            background: #1f4e1a;
+            color: #ccc;
         }
 
         .title {
-            font-size: 14px;
-            color: #6e7681;
+            font-size: 13px;
+            color: #777;
             text-align: center;
             margin-bottom: 16px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 600;
+            letter-spacing: 0.25em;
+            font-weight: 700;
+            border-bottom: 1px solid #333;
+            padding-bottom: 12px;
         }
 
         input[type="number"]::placeholder {
-            color: #3d444d;
+            color: #333;
         }
     </style>
 </head>
