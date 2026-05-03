@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineering Calculator</title>
+    <title>RETRO CALC</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -16,27 +16,35 @@
 
         body {
             font-family: 'JetBrains Mono', monospace;
-            background: #0d1117;
+            background: #000;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #c9d1d9;
+            color: #fff;
+            /* scanline overlay */
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.02) 2px,
+                rgba(255,255,255,0.02) 4px
+            );
         }
 
         .calculator {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            background: #000;
+            border: 2px solid #fff;
+            border-radius: 0;
+            box-shadow: 4px 4px 0 #fff;
             padding: 20px;
             width: 360px;
         }
 
         .display {
-            background: linear-gradient(135deg, #0a0e14 0%, #0d1117 100%);
-            border: 1px solid #1f2937;
-            border-radius: 6px;
+            background: #000;
+            border: 2px solid #fff;
+            border-radius: 0;
             padding: 16px;
             margin-bottom: 20px;
             min-height: 100px;
@@ -47,7 +55,7 @@
 
         #expression {
             font-size: 12px;
-            color: #6e7681;
+            color: #888;
             letter-spacing: 0.05em;
             font-weight: 400;
             min-height: 16px;
@@ -56,7 +64,7 @@
         #result {
             font-size: 32px;
             font-weight: 700;
-            color: #58a6ff;
+            color: #fff;
             text-align: right;
             word-break: break-all;
             line-height: 1.2;
@@ -64,8 +72,9 @@
         }
 
         #result.error {
-            color: #f85149;
+            color: #fff;
             font-size: 14px;
+            text-decoration: underline;
         }
 
         .input-group {
@@ -83,107 +92,100 @@
 
         .input-wrapper label {
             font-size: 11px;
-            color: #6e7681;
+            color: #aaa;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             font-weight: 600;
         }
 
         input[type="number"] {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 4px;
+            background: #000;
+            border: 1px solid #fff;
+            border-radius: 0;
             padding: 8px 10px;
-            color: #58a6ff;
+            color: #fff;
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: none;
         }
 
         input[type="number"]:focus {
             outline: none;
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+            border-color: #fff;
+            box-shadow: 2px 2px 0 #fff;
         }
 
         input[type="number"]:disabled {
-            opacity: 0.4;
+            opacity: 0.3;
             cursor: not-allowed;
         }
 
         .buttons {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 8px;
+            gap: 6px;
         }
 
         button {
-            background: #21262d;
-            border: 1px solid #30363d;
-            border-radius: 4px;
+            background: #000;
+            border: 1px solid #fff;
+            border-radius: 0;
             padding: 12px 8px;
-            color: #c9d1d9;
+            color: #fff;
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: none;
             user-select: none;
         }
 
         button:hover {
-            background: #30363d;
-            border-color: #58a6ff;
-            color: #58a6ff;
+            background: #fff;
+            color: #000;
         }
 
         button:active {
-            transform: scale(0.95);
-            background: #1f2937;
+            background: #ccc;
+            color: #000;
         }
 
         button.active {
-            background: #0d419e;
-            border-color: #58a6ff;
-            color: #58a6ff;
-            box-shadow: 0 0 8px rgba(88, 166, 255, 0.2);
+            background: #fff;
+            border-color: #fff;
+            color: #000;
         }
 
         button.binary {
-            color: #58a6ff;
-        }
-
-        button.binary:hover {
-            background: #1f4788;
+            color: #fff;
         }
 
         button.unary {
-            color: #3fb950;
-        }
-
-        button.unary:hover {
-            background: #1f4e1a;
+            color: #ccc;
+            border-style: dashed;
         }
 
         .title {
-            font-size: 14px;
-            color: #6e7681;
+            font-size: 13px;
+            color: #fff;
             text-align: center;
             margin-bottom: 16px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 600;
+            letter-spacing: 0.3em;
+            font-weight: 700;
+            border-bottom: 1px solid #444;
+            padding-bottom: 12px;
         }
 
         input[type="number"]::placeholder {
-            color: #3d444d;
+            color: #444;
         }
     </style>
 </head>
 <body>
     <div class="calculator">
-        <div class="title">Engineering Calculator</div>
+        <div class="title">[ CALC v1.0 ]</div>
 
         <!-- Display -->
         <div class="display">
