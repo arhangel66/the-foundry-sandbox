@@ -16,27 +16,48 @@
 
         body {
             font-family: 'JetBrains Mono', monospace;
-            background: #0d1117;
+            background: #000;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #c9d1d9;
+            color: #ddd;
+            position: relative;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.03) 0px,
+                rgba(255, 255, 255, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1;
         }
 
         .calculator {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            background: #0a0a0a;
+            border: 2px solid #fff;
+            border-radius: 0;
+            box-shadow: none;
             padding: 20px;
             width: 360px;
+            position: relative;
+            z-index: 2;
         }
 
         .display {
-            background: linear-gradient(135deg, #0a0e14 0%, #0d1117 100%);
-            border: 1px solid #1f2937;
-            border-radius: 6px;
+            background: #111;
+            border: 1px solid #555;
+            border-radius: 0;
             padding: 16px;
             margin-bottom: 20px;
             min-height: 100px;
@@ -47,7 +68,7 @@
 
         #expression {
             font-size: 12px;
-            color: #6e7681;
+            color: #666;
             letter-spacing: 0.05em;
             font-weight: 400;
             min-height: 16px;
@@ -56,7 +77,7 @@
         #result {
             font-size: 32px;
             font-weight: 700;
-            color: #58a6ff;
+            color: #fff;
             text-align: right;
             word-break: break-all;
             line-height: 1.2;
@@ -64,8 +85,10 @@
         }
 
         #result.error {
-            color: #f85149;
+            color: #fff;
             font-size: 14px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
         .input-group {
@@ -83,18 +106,18 @@
 
         .input-wrapper label {
             font-size: 11px;
-            color: #6e7681;
+            color: #666;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             font-weight: 600;
         }
 
         input[type="number"] {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 4px;
+            background: #000;
+            border: 1px solid #555;
+            border-radius: 0;
             padding: 8px 10px;
-            color: #58a6ff;
+            color: #fff;
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             text-align: center;
@@ -103,8 +126,8 @@
 
         input[type="number"]:focus {
             outline: none;
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+            border-color: #fff;
+            background: #222;
         }
 
         input[type="number"]:disabled {
@@ -119,11 +142,11 @@
         }
 
         button {
-            background: #21262d;
-            border: 1px solid #30363d;
-            border-radius: 4px;
+            background: #000;
+            border: 1px solid #fff;
+            border-radius: 0;
             padding: 12px 8px;
-            color: #c9d1d9;
+            color: #fff;
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             font-weight: 600;
@@ -133,42 +156,43 @@
         }
 
         button:hover {
-            background: #30363d;
-            border-color: #58a6ff;
-            color: #58a6ff;
+            background: #fff;
+            border-color: #fff;
+            color: #000;
         }
 
         button:active {
             transform: scale(0.95);
-            background: #1f2937;
         }
 
         button.active {
-            background: #0d419e;
-            border-color: #58a6ff;
-            color: #58a6ff;
-            box-shadow: 0 0 8px rgba(88, 166, 255, 0.2);
+            background: #fff;
+            border-color: #fff;
+            color: #000;
+            font-weight: 900;
         }
 
         button.binary {
-            color: #58a6ff;
+            color: #fff;
         }
 
         button.binary:hover {
-            background: #1f4788;
+            background: #fff;
+            color: #000;
         }
 
         button.unary {
-            color: #3fb950;
+            color: #fff;
         }
 
         button.unary:hover {
-            background: #1f4e1a;
+            background: #fff;
+            color: #000;
         }
 
         .title {
             font-size: 14px;
-            color: #6e7681;
+            color: #666;
             text-align: center;
             margin-bottom: 16px;
             text-transform: uppercase;
@@ -177,7 +201,7 @@
         }
 
         input[type="number"]::placeholder {
-            color: #3d444d;
+            color: #333;
         }
     </style>
 </head>
